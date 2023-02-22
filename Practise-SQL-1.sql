@@ -166,6 +166,188 @@ SELECT COUNT(DISTINCT(city)) FROM studentsdata;
 
 SELECT COUNT(city) - COUNT(DISTINCT(city)) FROM studentsdata;
 
+CREATE table attendance(
+	AID int,
+	id int,
+	Adate date,
+	Astatus varchar(10)
+);
+
+select * from attendance;
+
+INSERT into attendance (Aid,id,Adate,Astatus) 
+	values  (1,101,'2023-01-02','P'),
+			(2,101,'2023-01-03','P'),
+			(3,101,'2023-01-04','P'),
+			(4,101,'2023-01-05','P'),
+			(5,101,'2023-01-06','P'),
+			(6,102,'2023-01-02','P'),
+			(7,102,'2023-01-03','P'),
+			(8,102,'2023-01-04','P'),
+			(9,102,'2023-01-05','P'),
+			(10,102,'2023-01-06','P'),
+			(11,103,'2023-01-02','P'),
+			(12,103,'2023-01-03','A'),
+			(13,103,'2023-01-04','P'),
+			(14,103,'2023-01-05','P'),
+			(15,103,'2023-01-06','P'),
+			(16,104,'2023-01-02','P'),
+			(17,104,'2023-01-03','A'),
+			(18,104,'2023-01-04','P'),
+			(19,104,'2023-01-05','P'),
+			(20,104,'2023-01-06','P');
+		
+DELETE FROM attendance WHERE id=1;
+
+INSERT into attendance (Aid,id,Adate,Astatus) 
+	values  (21,105,'2023-01-02','A'),
+			(23,105,'2023-01-03','P'),
+			(23,105,'2023-01-04','P'),
+			(24,105,'2023-01-05','A'),
+			(25,105,'2023-01-06','P'),
+			(26,106,'2023-01-02','P'),
+			(27,106,'2023-01-03','A'),
+			(28,106,'2023-01-04','A'),
+			(29,106,'2023-01-05','P'),
+			(30,106,'2023-01-06','P'),
+			(31,107,'2023-01-02','A'),
+			(32,107,'2023-01-03','P'),
+			(33,107,'2023-01-04','P'),
+			(34,107,'2023-01-05','P'),
+			(35,107,'2023-01-06','P'),
+			(36,108,'2023-01-02','P'),
+			(37,108,'2023-01-03','P'),
+			(38,108,'2023-01-04','P'),
+			(39,108,'2023-01-05','A'),
+			(40,108,'2023-01-06','A'),
+			(41,109,'2023-01-02','P'),
+			(42,109,'2023-01-03','A'),
+			(43,109,'2023-01-04','P'),
+			(44,109,'2023-01-05','P'),
+			(45,109,'2023-01-06','A'),
+			(46,110,'2023-01-02','P'),
+			(47,110,'2023-01-03','P'),
+			(48,110,'2023-01-04','P'),
+			(49,110,'2023-01-05','A'),
+			(50,110,'2023-01-06','P');
+			
+select * from attendance;
+select * from studentsdata;
+
+select id,name from studentsdata where if(city="Chennai",0,1);
+
+select * from attendance where id=101;
+select * from attendance where aid=5;
+
+/*select working day of each students*/
+select id,count(adate) as working from attendance group by id;
+
+/*select present days of each students*/
+SELECT id,count(Astatus) as present from attendance where Astatus = 'P' group by id;
+
+---------------------------------------------
+JOINS
+----------------------------------------------
+
+select * from attendance;
+select * from studentsdata;
+
+SELECT studentsdata.name,attendance.adate,attendance.Astatus from
+studentsdata inner join attendance
+on studentsdata.id=attendance.id;
+
+create table emp (
+	emp_id int,
+	name varchar(25),
+	designation varchar(50),
+	dateofjoining date NOT NULL
+);
+
+SELECT * FROM emp;
+
+INSERT into emp (emp_id,name,designation,dateofjoining)
+values	(1,'Manoj','Electronics','2023-02-10'),
+		(2,'Kumar','Civil','2022-01-10'),
+		(3,'Kanna','Mechanical','2021-04-14'),
+		(4,'Priya','Mechanical','2021-12-05'),
+		(5,'Teja','Computer','2021-04-25'),
+		(6,'Srimathi','Civil','2021-10-30'),
+		(7,'Akash','Electronics','2021-08-04'),
+		(8,'Hari','Computer','2021-04-24'),
+		(9,'Praveen','Civil','2021-04-14'),
+		(10,'Azar','Computer','2021-04-15');
+		
+	
+create table salary(
+	sal_id int,
+	id int,
+	Sal_Date date,
+	Amount int
+);
+
+SELECT * from salary;
+
+DELETE from salary where id=1;
+drop table salary;
+
+insert into salary(sal_id,id,Sal_Date,Amount)
+values	(12345,1,'2023-03-05',50000),
+		(54657,2,'2023-03-05',45000),
+		(21542,3,'2023-03-05',30000),
+		(31572,4,'2023-03-05',20000),
+		(33565,5,'2023-03-05',10000),
+		(41212,6,'2023-03-05',15000),
+		(15452,7,'2023-03-05',35000),
+		(85125,8,'2023-03-05',20000),
+		(541254,12,'2023-03-05',5000);
+
+SELECT * from salary;
+SELECT * FROM emp;
+
+SELECT emp.name,emp.designation,emp.dateofjoining,salary.Sal_Date,salary.Amount from
+emp inner join salary
+on emp.emp_id=salary.id;
+
+
+SELECT emp.name,emp.designation,emp.dateofjoining,salary.Sal_Date,salary.Amount from
+emp left join salary
+on emp.emp_id=salary.id;
+
+SELECT emp.name,emp.designation,emp.dateofjoining,salary.Sal_Date,salary.Amount from
+emp right join salary
+on emp.emp_id=salary.id;
+
+--------------------
+CASE WHEN
+------------------
+
+select * from studentsdata;
+
+select DISTINCT (city) from studentsdata;
+
+/* 
+ * Erode = 50
+ * Hosur = 75
+ * Chennai = 150
+ * Namakkal = 50
+ * Bangalore = 200
+ */
+
+select name,city,
+(
+	CASE 
+		when city ='Erode' THEN 50
+		when city ='Hosur' THEN 75
+		when city ='Chennai' THEN 150
+		when city ='Namakkal' THEN 50
+		when city ='Bangalore' THEN 200
+		else 0
+	END
+) as amount from studentsdata;
+
+/*as amount from studentsdata where city = 'Chennai'; */
+
+UPDATE studentsdata set	city = 'Dharmapuri' where city = 'Namakkal';
 
 
 
